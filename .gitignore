@@ -4,3 +4,6 @@
 *build-gdb
 *gcc-12.5.0
 *gdb-16.3
+*.o
+*.bin
+*.iso
