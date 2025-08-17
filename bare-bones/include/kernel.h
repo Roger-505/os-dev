@@ -1,6 +1,6 @@
 /*
 ******************************************************************************* 
-* File name: kernel.c
+* File name: kernel.h
 *
 * Copyright (C) 2025 Roger Piovet
 * All rights reserved.
@@ -18,26 +18,29 @@
 ******************************************************************************* 
 */
 
-#include <kernel.h> 
+#ifndef KERNEL_H
+#define KERNEL_H
 
+#include <common.h> 
+#include <vga.h> 
+#include <utils.h> 
+
+/* Check if the compiler is targeting the wrong OS or target */
+#if defined(__unix__)   || defined(_WIN32) || \
+    defined(__APPLE__)  || !defined(__i386__)
+#error You must use a ix86-elf cross-compiler!
+#endif
+
+/*
+******************************************************************************* 
+*
+* Function name: kernel_main
+*
+* Purpose: Kernel entry point.
+*
+******************************************************************************* 
+*/
 void
-kernel_main(void)
-{
-    /* Terminal init */
-    terminal_initialize();
+kernel_main(void);
 
-    /* Useful vars */
-    int i = 0; 
-    char message[50];
-
-    /* Busy loop */
-    while (1)
-    {
-        itos(i,message);
-        terminal_puts(message);
-        terminal_puts(" ");
-
-        i++;
-        sleep();
-    }
-}
+#endif // KERNEL_H

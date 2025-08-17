@@ -1,6 +1,6 @@
 /*
 ******************************************************************************* 
-* File name: kernel.c
+* File name: utils.h
 *
 * Copyright (C) 2025 Roger Piovet
 * All rights reserved.
@@ -18,26 +18,21 @@
 ******************************************************************************* 
 */
 
-#include <kernel.h> 
+#ifndef UTILS_H 
+#define UTILS_H
 
+#include <common.h> 
+
+/*
+******************************************************************************* 
+*
+* Function name: kernel_main
+*
+* Purpose: Let the CPU do nothing for some time.
+*
+******************************************************************************* 
+*/
 void
-kernel_main(void)
-{
-    /* Terminal init */
-    terminal_initialize();
+sleep(void);
 
-    /* Useful vars */
-    int i = 0; 
-    char message[50];
-
-    /* Busy loop */
-    while (1)
-    {
-        itos(i,message);
-        terminal_puts(message);
-        terminal_puts(" ");
-
-        i++;
-        sleep();
-    }
-}
+#endif // UTILS_H

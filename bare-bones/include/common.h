@@ -1,6 +1,6 @@
 /*
 ******************************************************************************* 
-* File name: kernel.c
+* File name: common.h
 *
 * Copyright (C) 2025 Roger Piovet
 * All rights reserved.
@@ -18,26 +18,11 @@
 ******************************************************************************* 
 */
 
-#include <kernel.h> 
+#ifndef COMMON_H
+#define COMMON_H
 
-void
-kernel_main(void)
-{
-    /* Terminal init */
-    terminal_initialize();
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
 
-    /* Useful vars */
-    int i = 0; 
-    char message[50];
-
-    /* Busy loop */
-    while (1)
-    {
-        itos(i,message);
-        terminal_puts(message);
-        terminal_puts(" ");
-
-        i++;
-        sleep();
-    }
-}
+#endif // COMMON_H

@@ -13,59 +13,51 @@ ISO_DIR=$(OUT)/isodir
 ISO_BOOT=$(ISO_DIR)/boot
 GRUB_DIR=$(ISO_BOOT)/grub
 
-# Misc
-OS=myos
-
-# Sources
-SRCS=$(wildcard $(SRC)/*.c)
-BOOT=$(SRC)/boot.s
-
 # Objects
-OBJS=$(patsubst $(SRC)/%,$(OUT)/%,$(SRCS:.c=.o))
-BL=$(patsubst $(SRC)/%,$(OUT)/%,$(BOOT:.s=.o))
-EXE=$(OUT)/$(OS).bin
-ISO=$(OUT)/$(OS).iso
+boot_obj=$(OUT)/$(BOOT).o
+kern_obj=$(OUT)/$(KERN).o
+os_bin=$(OUT)/$(OS).bin
+os_iso=$(OUT)/$(OS).iso
 
 # Config files
 GRUB_CFG=grub.cfg
-LDS=linker.lds
 
 # Flags
 CFLAGS=-std=gnu99 -ffreestanding -O2 -Wall -Wextra
 LDFLAGS=-ffreestanding -O2 -nostdlib
-INCLUDE=-I./$(INCLUDE_DIR)
-
-.PHONY: all run clean
+INCLUDE=-I.$(INCLUDE_DIR)
 
 # Default target
-all: $(EXE) $(ISO)
+all: run
 
-# Link objects
-$(EXE): $(OBJS) $(BL)
-	$(CC) $(LDFLAGS) -T $(SRC)/$(LDS) $^ -o $@
-
-# Compile sources
-$(OUT)/%.o: $(SRC)/%.c | $(OUT)
-	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+# Output directory
+$(OUT):
+	mkdir $(OUT)
 
 # Assemble bootloader
-$(BL): $(BOOT) | $(OUT)
+$(boot_obj): $(SRC)/$(BOOT).s | $(OUT)
 	$(AS) $< -o $@
 
-# Create output directory
-$(OUT):
-	mkdir -p $(OUT)
+# Compile kernel
+$(kern_obj): $(SRC)/$(KERN).c | $(OUT)
+	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE)
+
+# Link into one binary
+$(os_bin): $(kern_obj) $(boot_obj)
+	$(CC) -T $(SRC)/linker.ld -o $@ $^ $(LDFLAGS)
 
 # Create ISO
-$(ISO): $(EXE)
+$(os_iso): $(os_bin)
 	mkdir -p $(GRUB_DIR)
 	cp $< $(ISO_BOOT)
 	cp $(SRC)/$(GRUB_CFG) $(GRUB_DIR)
 	$(GRUB) -o $@ $(ISO_DIR)
 
 # Run
-run: $(ISO)
+run: $(os_iso)
 	$(VM) -cdrom $<
 
 clean:
 	rm -rf $(OUT)
+
+.PHONY: all clean run

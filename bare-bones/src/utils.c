@@ -1,6 +1,6 @@
 /*
 ******************************************************************************* 
-* File name: kernel.c
+* File name: utils.c
 *
 * Copyright (C) 2025 Roger Piovet
 * All rights reserved.
@@ -18,26 +18,15 @@
 ******************************************************************************* 
 */
 
-#include <kernel.h> 
+#include <utils.h>
 
 void
-kernel_main(void)
+sleep(void)
 {
-    /* Terminal init */
-    terminal_initialize();
-
-    /* Useful vars */
-    int i = 0; 
-    char message[50];
-
-    /* Busy loop */
-    while (1)
+    // Do nothing for a while
+    for (volatile int i = 0; i < 10000000; i++)
     {
-        itos(i,message);
-        terminal_puts(message);
-        terminal_puts(" ");
-
-        i++;
-        sleep();
+        asm volatile("nop");
     }
 }
+
