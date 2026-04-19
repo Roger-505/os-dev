@@ -33,12 +33,11 @@ stack_top:
 _start:
 	/* Provide a stack */
 	mov $stack_top, %esp
-	
-    /* Call the global constructors */
-    call _init 
+  /* Call the global constructors */
+  call _init 
 
 	/* Jump to the kernel */
-	call kernel_main
+  call kernel_main
 
 	/* Infinite loop */
 	cli

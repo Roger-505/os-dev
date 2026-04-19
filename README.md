@@ -13,3 +13,16 @@ whatever seems interesting/fun. Only real goals:
 - Learn!
 
 A journal of each achievement for this toy OS can be found in JOURNAL.md
+
+# Dependencies
+## i386
+- xorriso
+- qemu-system-i386
+- mtools 
+- grub-pc-bin
+- TBD
+
+The following are compiled according to [OS dev cross compiler wiki](https://wiki.osdev.org/GCC_Cross-Compiler)
+- i686-elf-gcc
+- i686-elf-binutils 
+- i686-elf-gdb

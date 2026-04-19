@@ -56,6 +56,7 @@ size_t strlen(const char* str) {
 }
 
 
+/* TODO: Implement the following functions using standard functions instead (i.e. itoa) */
 void itos(int n, char* str)
 {
     int sign = n;
@@ -78,6 +79,31 @@ void itos(int n, char* str)
     if (sign < 0)
     {
         str[i++] = '-';
+    }
+
+    // Null termination
+    str[i] = '\0';
+
+    // Reverse the string
+    char temp;
+
+    for (int j = 0, k = i - 1; j < k; j++, k--)
+    {
+        temp = str[j];
+        str[j] = str[k];
+        str[k] = temp;
+    }
+}
+
+void uitos(uint64_t n, char* str)
+{
+    int i = 0;
+
+    // Extract digits and convert them to char in str
+    while (n > 0)
+    {
+        str[i++] = n % 10 + '0';
+        n /= 10;
     }
 
     // Null termination

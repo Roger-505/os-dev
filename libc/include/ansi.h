@@ -12,6 +12,7 @@
 #include <sys/cdefs.h>
 
 #include <stddef.h>
+#include <stdint.h> 
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,6 +24,7 @@ void* memmove(void*, const void*, size_t);
 void* memset(void*, int, size_t);
 size_t strlen(const char*);
 void itos(int, char*);
+void uitos(uint64_t, char*);
 
 #ifdef __cplusplus
 }
